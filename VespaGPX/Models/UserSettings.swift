@@ -36,4 +36,18 @@ final class UserSettings {
         self.shouldEnableAutoFollowMe = shouldEnableAutoFollowMe
         self.shouldRecordTripData = shouldRecordTripData
     }
+
+    static var dummy: UserSettings {
+        get {
+            return UserSettings(shouldSynchronizeClock: true,
+                                shouldDisplayInCelsius: false,
+                                isAutostartNaviEnabled: true,
+                                shouldDisplayInKm: false,
+                                shouldSynchronizeData: true,
+                                isSafeDrivingEnabled: false,
+                                shouldEnableAutoFollowMe: true,
+                                shouldRecordTripData: false)
+        }
+    }
+
 }

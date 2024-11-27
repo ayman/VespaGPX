@@ -24,14 +24,22 @@ final class UserProfile {
         get {
             if let data = Data(base64Encoded: self.avatarData,
                                options: .ignoreUnknownCharacters) {
-                print(avatarData)
                 return UIImage(data: data) ?? UIImage()
-//                return Image(uiImage: image ?? UIImage())
-//                    .resizable()
-//                    .ignoresSafeArea()
-//                    .aspectRatio(contentMode: .fill) as! Image
             }
             return UIImage() // Image(systemName: "person.fill")
+        }
+    }
+
+    static var dummy: UserProfile {
+        get {
+            let uuid = "50e24348-ace9-11ef-abec-e695dd16660d"
+            if let pngData = UIImage(systemName: "person.fill")?.pngData() {
+                return UserProfile(id: uuid,
+                                   avatarData: pngData.base64EncodedString())
+            } else {
+                return UserProfile(id: uuid,
+                                   avatarData: "")
+            }
         }
     }
 }

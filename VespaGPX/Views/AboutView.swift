@@ -18,20 +18,29 @@ struct AboutView: View {
         NavigationStack {
             Form {
                 Section(header: Text(versionNumber)) {
-                    VStack(alignment: .leading) {
-                        Image("VespaGPX")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 128, height: 128)
-                            .cornerRadius(10)
-                        Text(AppSettings.shared.appName)
-                            .font(.title)
-                        Text("This is a simple converter utility for the JSON outputs from the official Vespa app.   You can export/backup your data from the Vepsa app which writes a JSON file.  Have this app read that file and you can export GPX files or raw telemetry data as CSVs. \n")
-                        Text("\(AppSettings.shared.appName) is free, open source, and not affiliated with Vespa in any way. This app is completely private...\(Text("no data is ever collected and no tracking is happening").italic()).")
+                    Image("VespaGPX")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 128, height: 128)
+                        .cornerRadius(10)
+                    Text(AppSettings.shared.appName)
+                        .font(.title)
+                    Text("This is a simple converter utility for the JSON outputs from the official Vespa app.   You can export/backup your data from the Vepsa app which writes a JSON file.  Have this app read that file and you can export GPX files or raw telemetry data as CSVs.")
+                    Text("\(AppSettings.shared.appName) is free, open source, and not affiliated with Vespa in any way. This app is completely private...\(Text("no data is ever collected and no tracking is happening").italic()).")
+                    Text("https://shamur.ai/bin/vespaGPX")
+                }
+                .listRowSeparator(.hidden)
+                Section("Help") {
+                    Text("""
+                         To use this app, you'll need to be using the [Vespa ](https://apps.apple.com/us/app/vespa/id1389278133) iOS app to track your rides.  You'll need to manually backup the data by going to:
+                         """)
+                    .listRowSeparator(.hidden)
 
-                        Text("https://shamur.ai")
-                            .padding([.bottom, .top], 10)
-                    }
+                    Text("Settings➡Backup➡Export").monospaced()
+                        .listRowSeparator(.hidden)
+                    Text("""
+                         Then load the exported JSON file into this app and export whatever trips you like!
+                         """)
                 }
                 Section("GPX Exporting") {
                     Text("\(Text("GPX data").bold()) is an XML file of the trip's GPS coordinates, elevation, and time stamps.")
@@ -39,15 +48,23 @@ struct AboutView: View {
                 Section("CSV Exporting") {
                     Text("\(Text("CSV data").bold()) contains telemetry as:\n\(Text("ts, distance, speed, rpm, consumption, avg_consumption, gas, acceleration, batteryVoltage, EcuWarningLamp, MilLamp, EcuUrgentServiceFlag, oilAlarm, engineTemp, wheelSlip.").monospaced())")
                     HStack {
+#if targetEnvironment(simulator)
+                        ShareLink(item: "",
+                                  preview: SharePreview("allTrips.csv")) {
+                            Label("Export all trips as CSV",
+                                  systemImage: "square.and.arrow.up.on.square")
+                        }
+#else
                         ShareLink(item: self.makeBigCSVFile(),
                                   preview: SharePreview("allTrips.csv")) {
                             Label("Export all trips as CSV",
                                   systemImage: "square.and.arrow.up.on.square")
                         }
+#endif
                     }
                 }
                 Section("License") {
-                    Text("CryptoSwift: This product includes software developed by the \"Marcin Krzyzanowski\" (http://krzyzanowskim.com/).")
+                    Text("CryptoSwift: This product includes software developed by the \"Marcin Krzyzanowski\" (http://krzyzanowskim.com/).").font(.caption)
                 }
             }
             .navigationBarTitleDisplayMode(.large)
@@ -70,4 +87,6 @@ struct AboutView: View {
 
 #Preview {
     AboutView()
+        .environmentObject(ViewModel())
+        .modelContainer(previewContainer)
 }

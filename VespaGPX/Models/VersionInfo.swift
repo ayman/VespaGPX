@@ -23,4 +23,14 @@ final class VersionInfo {
         self.platformVersion = platformVersion
         self.uUID = uUID
     }
+
+    static var dummy: VersionInfo {
+        get {
+            return VersionInfo(appVersion: "2.9.5",
+                               platform: "iOS",
+                               appName: "Vespa",
+                               platformVersion: "146",
+                               uUID: "3f0e0030-ace9-11ef-abec-e695dd16660d")
+        }
+    }
 }

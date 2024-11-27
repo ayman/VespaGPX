@@ -9,6 +9,10 @@ import Foundation
 
 class CSVMaker {
     static func mergeGPX(names: [String], csvFiles: [String]) -> String {
+        if csvFiles.isEmpty {
+            return ""
+        }
+
         var output = ""
         var first = csvFiles[0]
         first = "id;" + first

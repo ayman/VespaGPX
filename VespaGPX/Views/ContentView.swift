@@ -49,7 +49,15 @@ struct ContentView: View {
     }
 }
 
-#Preview {
+#Preview("First Run") {
     ContentView()
         .modelContainer(for: Activity.self, inMemory: true)
+
+}
+
+#Preview("Activities") {
+    ContentView()
+        .modelContainer(previewContainer)
+        .environmentObject(ViewModel())
+
 }

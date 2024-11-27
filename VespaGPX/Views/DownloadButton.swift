@@ -183,4 +183,5 @@ struct DownloadButton: View {
 
 #Preview {
     DownloadButton()
+        .environmentObject(ViewModel())
 }

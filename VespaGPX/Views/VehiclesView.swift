@@ -52,11 +52,13 @@ struct VehiclesView: View {
                     }
                 }
             }
+            .navigationBarTitleDisplayMode(.large)
+            .navigationTitle(Text("Vehicles"))
         }
-        .navigationTitle(Text("Vehicles"))
     }
 }
 
 #Preview {
     VehiclesView()
+        .modelContainer(previewContainer)
 }

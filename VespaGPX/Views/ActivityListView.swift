@@ -15,26 +15,55 @@ struct ActivityListView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: [SortDescriptor(\Activity.id, order: .reverse)]) private var activities: [Activity]
 
+    @State private var selection = Set<Activity>()
+    @State var editMode: EditMode = .inactive
+
     var body: some View {
         NavigationStack {
-            List {
-                ForEach(activities) { activity in
-                    NavigationLink {
-                        ActivityView(activity: activity)
-                    } label: {
-                        ActivityRowView(item: activity)
-                    }
+            List(activities,
+                 id: \.self,
+                 selection: $selection) { activity in
+                NavigationLink {
+                    ActivityView(activity: activity)
+                } label: {
+                    ActivityRowView(item: activity)
                 }
             }
-            .navigationTitle(Text("Activities"))
-            .toolbar {
-                DownloadButton(minimal: true)
-            }
+                 .navigationTitle(Text("Activities"))
+                 .toolbar {
+                     ToolbarItem(placement: .topBarLeading) {
+                         DownloadButton(minimal: true)
+                             .disabled(editMode != .inactive)
+                     }
+                     ToolbarItem {
+                         if editMode == .active {
+                             Button(action: {
+                                 // TODO: pop up a modal to ask GPX or CSV
+                                 // TODO: export group
+                                 getSelection()
+                             }) {
+                                 HStack {
+                                     Image(systemName: "square.and.arrow.up")
+                                     Text("Export")
+                                 }
+                             }
+                         }
+                     }
+                     ToolbarItemGroup(placement: .topBarTrailing) {
+                         EditButton()
+                     }
+                 }
+                 .environment(\.editMode, $editMode)
         }
         .environmentObject(viewModel)
+    }
+
+    func getSelection() {
+        print(self.selection.count)
     }
 }
 
 #Preview {
     ActivityListView()
+        .environmentObject(ViewModel())
 }

@@ -43,4 +43,24 @@ final class Vehicle: Identifiable {
         self.serial = serial
         self.isAssociated = isAssociated
     }
+
+    static var dummy: Vehicle {
+        get {
+            return Vehicle(name: "GTS 300 Super Sport",
+                           isCelsius: false,
+                           isKm: false,
+                           latestUpdate: 1716672425965,
+                           id: "2309406069516660",
+                           totalMileage: 36,
+                           engineSize: 300,
+                           model: "GTS 300 My22",
+                           vin: "acea11efabece695d",
+                           modelId: "gts_300_hella",
+                           modelYear: 2024,
+                           batteryVoltage: 12.4,
+                           userId: UserProfile.dummy.id,
+                           serial: "000e2878-acea-11ef-abec-e695dd16660d",
+                           isAssociated: true)
+        }
+    }
 }

@@ -74,11 +74,13 @@ struct UserView: View {
                     }
                 }
             }
+            .navigationBarTitleDisplayMode(.large)
+            .navigationTitle(Text("Rider"))
         }
-        .navigationTitle(Text("Rider"))
     }
 }
 
 #Preview {
     UserView()
+        .modelContainer(previewContainer)
 }

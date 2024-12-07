@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		E30CC5A12CE7D64E005E8B9B /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = E30CC5A02CE7D64E005E8B9B /* .swiftlint.yml */; };
 		E30CC5A42CE7DC9F005E8B9B /* CryptoSwift in Frameworks */ = {isa = PBXBuildFile; productRef = E30CC5A32CE7DC9F005E8B9B /* CryptoSwift */; };
+		E3AF1DA12D04EDA300920920 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = E3AF1D9F2D04EDA300920920 /* LICENSE */; };
+		E3AF1DA22D04EDA300920920 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = E3AF1DA02D04EDA300920920 /* README.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -30,6 +32,8 @@
 
 /* Begin PBXFileReference section */
 		E30CC5A02CE7D64E005E8B9B /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
+		E3AF1D9F2D04EDA300920920 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		E3AF1DA02D04EDA300920920 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		E3D0A6E92CE6C52B0099EA76 /* VespaGPX.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VespaGPX.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E3D0A6FB2CE6C52C0099EA76 /* VespaGPXTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VespaGPXTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E3D0A7052CE6C52C0099EA76 /* VespaGPXUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VespaGPXUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -95,6 +99,8 @@
 		E3D0A6E02CE6C52B0099EA76 = {
 			isa = PBXGroup;
 			children = (
+				E3AF1D9F2D04EDA300920920 /* LICENSE */,
+				E3AF1DA02D04EDA300920920 /* README.md */,
 				E30CC5A02CE7D64E005E8B9B /* .swiftlint.yml */,
 				E3D0A6EB2CE6C52B0099EA76 /* VespaGPX */,
 				E3D0A6FE2CE6C52C0099EA76 /* VespaGPXTests */,
@@ -242,6 +248,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E3AF1DA12D04EDA300920920 /* LICENSE in Resources */,
+				E3AF1DA22D04EDA300920920 /* README.md in Resources */,
 				E30CC5A12CE7D64E005E8B9B /* .swiftlint.yml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -446,7 +454,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"VespaGPX/Preview Content\"";
 				DEVELOPMENT_TEAM = 4C99K25T93;
 				ENABLE_PREVIEWS = YES;
@@ -465,7 +473,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = ai.shamur.VespaGPX;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -484,7 +492,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"VespaGPX/Preview Content\"";
 				DEVELOPMENT_TEAM = 4C99K25T93;
 				ENABLE_PREVIEWS = YES;
@@ -503,7 +511,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = ai.shamur.VespaGPX;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

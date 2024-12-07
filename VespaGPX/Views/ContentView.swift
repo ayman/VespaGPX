@@ -55,9 +55,8 @@ struct ContentView: View {
 
 }
 
-#Preview("Activities") {
+#Preview("Loaded") {
     ContentView()
         .modelContainer(previewContainer)
         .environmentObject(ViewModel())
-
 }

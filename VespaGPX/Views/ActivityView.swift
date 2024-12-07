@@ -63,7 +63,7 @@ struct ActivityView: View {
     }
 
     func getGPX() -> String {
-        let rows = viewModel.parseGpsCSV(gpsData: activity.gpsData)
+        let rows = GPXMaker.parseGpsCSV(gpsData: activity.gpsData)
         return GPXMaker.getGPX(gpsRows: rows)
     }
 }

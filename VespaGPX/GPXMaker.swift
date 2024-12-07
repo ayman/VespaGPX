@@ -14,8 +14,24 @@ class GPXMaker {
             return
 """
 <?xml version="1.0" encoding="UTF-8"?>
-<gpx xmlns="http://www.topografix.com/GPX/1/1" version="1.1" creator="VespaGPX for iOS">
-    <trk>
+<gpx version="1.1" creator="VespaGPX for iOS"
+    xmlns="http://www.topografix.com/GPX/1/1"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www.garmin.com/xmlschemas/GpxExtensionsv3.xsd"
+    xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1"
+    xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3">
+    <metadata>
+        <name>Vespa Ride</name>
+        <type>Motorcycling</type>
+    </metadata>
+
+"""
+        }
+    }
+
+    private static var gpxTrksegStart: String {
+        get {
+            return
+"""
         <trkseg>
 
 """
@@ -36,11 +52,20 @@ class GPXMaker {
         }
     }
 
-    private static var gpxFooter: String {
+    private static var gpxTrksegEnd: String {
         get {
             return
 """
         </trkseg>
+
+"""
+        }
+    }
+
+    private static var gpxFooter: String {
+        get {
+            return
+"""
     </trk>
 </gpx>
 """
@@ -50,10 +75,13 @@ class GPXMaker {
     static func getGPX(gpsRows: [GPSRow],
                        addHeadFood: Bool = true) -> String {
         var gpx = ""
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+        let formatter = ISO8601DateFormatter()
+        formatter.formatOptions = [.withInternetDateTime]
+        // let formatter = DateFormatter()
+        // formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
         if addHeadFood {
             gpx += GPXMaker.gpxHeader
+            gpx += GPXMaker.gpxTrksegStart
         }
         gpsRows.forEach { row in
             let doubleTime = (Double(row.ts) ?? (Date.now.timeIntervalSince1970 * 1000)) / 1000.0
@@ -66,6 +94,7 @@ class GPXMaker {
                           dateString)
         }
         if addHeadFood {
+            gpx += GPXMaker.gpxTrksegEnd
             gpx += GPXMaker.gpxFooter
         }
         return gpx
@@ -73,12 +102,31 @@ class GPXMaker {
 
     static func mergeGPX(gpsRows: [[GPSRow]]) -> String {
         var gpx = GPXMaker.gpxHeader
+        gpx += GPXMaker.gpxTrksegStart
         gpsRows.forEach { collection in
             gpx += GPXMaker.getGPX(gpsRows: collection,
                                    addHeadFood: false)
         }
+        gpx += GPXMaker.gpxTrksegEnd
         gpx += GPXMaker.gpxFooter
         return gpx
+    }
+
+    static func parseGpsCSV(gpsData: String) -> [GPSRow] {
+        var gps = [GPSRow]()
+        var gpsRows = gpsData.components(separatedBy: "\n")
+        gpsRows.removeFirst()
+        for gRow in gpsRows {
+            let columns = gRow.components(separatedBy: ";")
+            if columns.count == 4 {
+                let newRow = GPSRow(ts: columns[0],
+                                    lat: columns[1],
+                                    lng: columns[2],
+                                    alt: columns[3])
+                gps.append(newRow)
+            }
+        }
+        return gps
     }
 
 }

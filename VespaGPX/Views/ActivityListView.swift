@@ -17,6 +17,7 @@ struct ActivityListView: View {
 
     @State private var selection = Set<Activity>()
     @State var editMode: EditMode = .inactive
+    @State var showAlert = false
 
     var body: some View {
         NavigationStack {
@@ -29,24 +30,54 @@ struct ActivityListView: View {
                     ActivityRowView(item: activity)
                 }
             }
-                 .navigationTitle(Text("Activities"))
                  .toolbar {
-                     ToolbarItem(placement: .topBarLeading) {
-                         DownloadButton(minimal: true)
-                             .disabled(editMode != .inactive)
-                     }
-                     ToolbarItem {
-                         if editMode == .active {
-                             Button(action: {
-                                 // TODO: pop up a modal to ask GPX or CSV
-                                 // TODO: export group
-                                 getSelection()
-                             }) {
-                                 HStack {
-                                     Image(systemName: "square.and.arrow.up")
-                                     Text("Export")
-                                 }
+                     if editMode == .inactive {
+                             ToolbarItem(placement: .topBarLeading) {
+                                 DownloadButton(minimal: true)
+                                     .disabled(editMode != .inactive)
                              }
+                     }
+                     if editMode == .active {
+                         ToolbarItem {
+#if targetEnvironment(simulator)
+                             ShareLink(item: "",
+                                       preview: SharePreview("trips.csv")) {
+                                 Label("Export CSV",
+                                       systemImage: "square.and.arrow.up.on.square")
+                                 .labelStyle(.titleOnly)
+                             }
+                                       .disabled(self.selection.isEmpty)
+
+#else
+                             ShareLink(item: getCSVs(),
+                                       preview: SharePreview("trips.csv")) {
+                                 Label("Export CSV",
+                                       systemImage: "square.and.arrow.up.on.square")
+                                 .labelStyle(.titleOnly)
+                             }
+                                       .disabled(self.selection.isEmpty)
+#endif
+                         }
+                         ToolbarItem {
+#if targetEnvironment(simulator)
+                             ShareLink(item: "",
+                                       preview: SharePreview("trips.gpx")) {
+                                 Label("Export GPX",
+                                       systemImage: "square.and.arrow.up.on.square")
+                                 .labelStyle(.titleOnly)
+                             }
+                                       .disabled(self.selection.isEmpty)
+
+#else
+                             ShareLink(item: getGPX(),
+                                       preview: SharePreview("trips.gpx")) {
+                                 Label("Export GPX",
+                                       systemImage: "square.and.arrow.up.on.square")
+                                 .labelStyle(.titleOnly)
+                             }
+                                       .disabled(self.selection.isEmpty)
+
+#endif
                          }
                      }
                      ToolbarItemGroup(placement: .topBarTrailing) {
@@ -54,16 +85,45 @@ struct ActivityListView: View {
                      }
                  }
                  .environment(\.editMode, $editMode)
+                 .navigationTitle(Text("Activities"))
         }
         .environmentObject(viewModel)
     }
 
-    func getSelection() {
-        print(self.selection.count)
+    func getCSVs() -> CSVFile {
+        var names = [String]()
+        var files = [String]()
+        selection.forEach { activity in
+            names.append(activity.id)
+            files.append(activity.tripData)
+        }
+        let csvs = CSVMaker.merge(names: names,
+                                     csvFiles: files)
+        return CSVFile(fileName: "trips.csv", content: csvs)
+    }
+
+    func getGPX() -> GPXFile {
+        // var names = [String]()
+        var gpxData = [String]()
+        selection.forEach { activity in
+            gpxData.append(activity.gpsData)
+        }
+        var gpsRows = [[GPSRow]]()
+        gpxData.forEach { data in
+            gpsRows.append(GPXMaker.parseGpsCSV(gpsData: data))
+        }
+        let gpx = GPXMaker.mergeGPX(gpsRows: gpsRows)
+        return GPXFile(fileName: "trips.gpx", content: gpx)
+    }
+
+    func clearSelection() {
+        selection.removeAll()
+        editMode = .inactive
     }
 }
 
 #Preview {
     ActivityListView()
+        .modelContainer(previewContainer)
         .environmentObject(ViewModel())
 }

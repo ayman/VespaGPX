@@ -22,6 +22,14 @@ struct FirstView: View {
                  """)
                 .padding()
             DownloadButton()
+            Text("Need more help?")
+                .italic()
+                .padding(.top)
+            Text("""
+                 There are [detailed instructions on the web](https://shamur.ai/bin/vespaGPX).
+                 """)
+                .italic()
+                .padding(.horizontal)
         }
     }
 }

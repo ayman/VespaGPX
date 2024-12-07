@@ -25,14 +25,14 @@ struct AboutView: View {
                         .cornerRadius(10)
                     Text(AppSettings.shared.appName)
                         .font(.title)
-                    Text("This is a simple converter utility for the JSON outputs from the official Vespa app.   You can export/backup your data from the Vepsa app which writes a JSON file.  Have this app read that file and you can export GPX files or raw telemetry data as CSVs.")
+                    Text("This is a simple converter utility for the JSON outputs from the official Vespa app.  You can export/backup your data from the Vepsa app which writes a JSON file.  Have this app read that file and you can export GPX files or raw telemetry data as CSVs.")
                     Text("\(AppSettings.shared.appName) is free, open source, and not affiliated with Vespa in any way. This app is completely private...\(Text("no data is ever collected and no tracking is happening").italic()).")
                     Text("https://shamur.ai/bin/vespaGPX")
                 }
                 .listRowSeparator(.hidden)
                 Section("Help") {
                     Text("""
-                         To use this app, you'll need to be using the [Vespa ](https://apps.apple.com/us/app/vespa/id1389278133) iOS app to track your rides.  You'll need to manually backup the data by going to:
+                         To use this app, you'll need to be using the [Vespa iOS app](https://apps.apple.com/us/app/vespa/id1389278133) to track your rides.  You'll need to manually backup the data by going to:
                          """)
                     .listRowSeparator(.hidden)
 
@@ -40,6 +40,10 @@ struct AboutView: View {
                         .listRowSeparator(.hidden)
                     Text("""
                          Then load the exported JSON file into this app and export whatever trips you like!
+                         """)
+                    .listRowSeparator(.hidden)
+                    Text("""
+                         \(Text("Need more help?").italic()) There are [detailed instructions on the web](https://shamur.ai/bin/vespaGPX).
                          """)
                 }
                 Section("GPX Exporting") {
@@ -79,7 +83,7 @@ struct AboutView: View {
             names.append(activity.id)
             files.append(activity.tripData)
         }
-        let csv = CSVMaker.mergeGPX(names: names, csvFiles: files)
+        let csv = CSVMaker.merge(names: names, csvFiles: files)
         return CSVFile(fileName: "allTrips.csv",
                        content: csv)
     }

@@ -96,30 +96,13 @@ class ViewModel: ObservableObject {
         return trip
     }
 
-    func parseGpsCSV(gpsData: String) -> [GPSRow] {
-        var gps = [GPSRow]()
-        var gpsRows = gpsData.components(separatedBy: "\n")
-        gpsRows.removeFirst()
-        for gRow in gpsRows {
-            let columns = gRow.components(separatedBy: ";")
-            if columns.count == 4 {
-                let newRow = GPSRow(ts: columns[0],
-                                    lat: columns[1],
-                                    lng: columns[2],
-                                    alt: columns[3])
-                gps.append(newRow)
-            }
-        }
-        return gps
-    }
-
     func parseTripsCSVs(tripData: VespaTrips) {
         let tData = tripData.tripData
         self.tripLog[tripData.id] = parseTripCSV(tripData: tData)
         self.tripRaw[tripData.id] = tData
 
         let gData = tripData.tripGPS
-        self.gpsLog[tripData.id] = parseGpsCSV(gpsData: gData)
+        self.gpsLog[tripData.id] = GPXMaker.parseGpsCSV(gpsData: gData)
         self.gpsRaw[tripData.id] = gData
     }
 }

@@ -21,10 +21,6 @@ struct UserView: View {
                 Section("User Profile") {
                     if !userProfile.isEmpty {
                         let profile = userProfile[0]
-                        SimpleRowView(left: "id",
-                                      right: profile.id,
-                                      noSpacing: true)
-
                         HStack {
                             Text("avatar")
                                 .font(.footnote)
@@ -37,6 +33,9 @@ struct UserView: View {
                                 .aspectRatio(contentMode: .fill)
                                 .frame(alignment: .trailing)
                         }
+                        SimpleRowView(left: "id",
+                                      right: profile.id,
+                                      noSpacing: true)
                     }
                 }
 
@@ -47,30 +46,35 @@ struct UserView: View {
                                       right: "\(settings.isAutostartNaviEnabled.description)")
                         SimpleRowView(left: "isSafeDrivingEnabled",
                                       right: "\(settings.isSafeDrivingEnabled)")
+                        SimpleRowView(left: "settings.shouldRecordTripData)",
+                                      right: "\(settings.shouldRecordTripData)")
                         SimpleRowView(left: "shouldDisplayInCelsius",
                                       right: "\(settings.shouldDisplayInCelsius)")
+                        SimpleRowView(left: "shouldDisplayInKm",
+                                      right: "\(settings.shouldDisplayInKm)")
                         SimpleRowView(left: "shouldEnableAutoFollowMe",
                                       right: "\(settings.shouldEnableAutoFollowMe)")
                         SimpleRowView(left: "shouldSynchronizeClock",
                                       right: "\(settings.shouldSynchronizeClock)")
-                        SimpleRowView(left: "shouldDisplayInKm",
-                                      right: "\(settings.shouldDisplayInKm)")
                         SimpleRowView(left: "shouldSynchronizeData",
                                       right: "\(settings.shouldSynchronizeData)")
-                        SimpleRowView(left: "settings.shouldRecordTripData)",
-                                      right: "\(settings.shouldRecordTripData)")
                     }
                 }
 
                 Section("Version Info") {
                     if !versionInfo.isEmpty {
                         let info = versionInfo[0]
-                        SimpleRowView(left: "appVersion", right: info.appVersion)
-                        SimpleRowView(left: "platform", right: info.platform)
-                        SimpleRowView(left: "appName", right: info.appName)
-                        SimpleRowView(left: "platformVersion", right: info.platformVersion)
-                        SimpleRowView(left: "uUID", right: info.uUID, noSpacing: true)
-
+                        SimpleRowView(left: "appName",
+                                      right: info.appName)
+                        SimpleRowView(left: "appVersion",
+                                      right: info.appVersion)
+                        SimpleRowView(left: "platform",
+                                      right: info.platform)
+                        SimpleRowView(left: "platformVersion",
+                                      right: info.platformVersion)
+                        SimpleRowView(left: "uUID",
+                                      right: info.uUID,
+                                      noSpacing: true)
                     }
                 }
             }

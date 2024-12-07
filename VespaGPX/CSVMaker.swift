@@ -8,7 +8,7 @@
 import Foundation
 
 class CSVMaker {
-    static func mergeGPX(names: [String], csvFiles: [String]) -> String {
+    static func merge(names: [String], csvFiles: [String]) -> String {
         if csvFiles.isEmpty {
             return ""
         }
@@ -20,6 +20,11 @@ class CSVMaker {
         output += firstRows[0] + "\n"
         for firstCounter in 1...(firstRows.count - 1) {
             output += "\(names[0]);\(firstRows[firstCounter])\n"
+        }
+
+        if csvFiles.count == 1 {
+            return output.replacingOccurrences(of: ";",
+                                               with: ",")
         }
 
         for counter in 1...(csvFiles.count - 1) {

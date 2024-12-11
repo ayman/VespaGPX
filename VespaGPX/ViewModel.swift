@@ -59,7 +59,7 @@ class ViewModel: ObservableObject {
         do {
             let encoder = try Blowfish(key: Array(self.userId.utf8),
                                        blockMode: ECB(),
-                                       padding: .pkcs7)
+                                       padding: .pkcs5)
             let decode = try encoder.decrypt(decodedData)
             json = String(bytes: decode, encoding: .utf8) ?? "fail"
         } catch {

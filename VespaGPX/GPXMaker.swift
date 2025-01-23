@@ -23,6 +23,7 @@ class GPXMaker {
         <name>Vespa Ride</name>
         <type>Motorcycling</type>
     </metadata>
+    <trk>
 
 """
         }

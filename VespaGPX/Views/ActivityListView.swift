@@ -103,7 +103,6 @@ struct ActivityListView: View {
     }
 
     func getGPX() -> GPXFile {
-        // var names = [String]()
         var gpxData = [String]()
         selection.forEach { activity in
             gpxData.append(activity.gpsData)
@@ -112,6 +111,7 @@ struct ActivityListView: View {
         gpxData.forEach { data in
             gpsRows.append(GPXMaker.parseGpsCSV(gpsData: data))
         }
+        gpsRows.sort(by: { Double($0.first!.ts) ?? 0.0 <= Double($1.first!.ts) ?? 1.0 })
         let gpx = GPXMaker.mergeGPX(gpsRows: gpsRows)
         return GPXFile(fileName: "trips.gpx", content: gpx)
     }

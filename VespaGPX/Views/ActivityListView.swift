@@ -32,10 +32,10 @@ struct ActivityListView: View {
             }
                  .toolbar {
                      if editMode == .inactive {
-                             ToolbarItem(placement: .topBarLeading) {
-                                 DownloadButton(minimal: true)
-                                     .disabled(editMode != .inactive)
-                             }
+                         ToolbarItem(placement: .topBarLeading) {
+                             DownloadButton(minimal: true)
+                                 .disabled(editMode != .inactive)
+                         }
                      }
                      if editMode == .active {
                          ToolbarItem {

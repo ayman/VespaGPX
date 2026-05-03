@@ -46,7 +46,7 @@ struct UserView: View {
                                       right: "\(settings.isAutostartNaviEnabled.description)")
                         SimpleRowView(left: "isSafeDrivingEnabled",
                                       right: "\(settings.isSafeDrivingEnabled)")
-                        SimpleRowView(left: "settings.shouldRecordTripData)",
+                        SimpleRowView(left: "settings.shouldRecordTripData",
                                       right: "\(settings.shouldRecordTripData)")
                         SimpleRowView(left: "shouldDisplayInCelsius",
                                       right: "\(settings.shouldDisplayInCelsius)")

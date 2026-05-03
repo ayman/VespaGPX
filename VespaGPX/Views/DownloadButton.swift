@@ -18,7 +18,6 @@ struct DownloadButton: View {
             Button(action: { showFileImporter = true }) {
                 HStack {
                     Image(systemName: "plus")
-                    Text("Load JSON")
                 }
             }
             .disabled(self.viewModel.downloading)
@@ -183,5 +182,9 @@ struct DownloadButton: View {
 
 #Preview {
     DownloadButton()
+        .environmentObject(ViewModel())
+}
+#Preview {
+    DownloadButton(minimal: true)
         .environmentObject(ViewModel())
 }

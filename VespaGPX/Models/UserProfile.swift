@@ -20,13 +20,14 @@ final class UserProfile {
         self.avatarData = avatarData
     }
 
-    var avatar: UIImage {
+    var avatar: UIImage? {
         get {
-            if let data = Data(base64Encoded: self.avatarData,
-                               options: .ignoreUnknownCharacters) {
-                return UIImage(data: data) ?? UIImage()
+            guard !self.avatarData.isEmpty,
+                  let data = Data(base64Encoded: self.avatarData,
+                                  options: .ignoreUnknownCharacters) else {
+                return nil
             }
-            return UIImage() // Image(systemName: "person.fill")
+            return UIImage(data: data)
         }
     }
 

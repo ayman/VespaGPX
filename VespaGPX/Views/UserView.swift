@@ -27,11 +27,19 @@ struct UserView: View {
                                 .bold()
                                 .frame(maxWidth: .infinity, alignment: .leading)
                             Spacer()
-                            Image(uiImage: profile.avatar)
-                                .resizable()
-                                .ignoresSafeArea()
-                                .aspectRatio(contentMode: .fill)
-                                .frame(alignment: .trailing)
+                            if let avatar = profile.avatar {
+                                Image(uiImage: avatar)
+                                    .resizable()
+                                    .ignoresSafeArea()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(alignment: .trailing)
+                            } else {
+                                Image(systemName: "person.fill")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: 44, height: 44, alignment: .trailing)
+                                    .foregroundStyle(.secondary)
+                            }
                         }
                         SimpleRowView(left: "id",
                                       right: profile.id,

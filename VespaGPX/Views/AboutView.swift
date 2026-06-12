@@ -67,6 +67,11 @@ struct AboutView: View {
 #endif
                     }
                 }
+                Section("Version") {
+                    let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
+                    let buildVersionNumber = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? ""
+                    Text("\(appVersion) (\(buildVersionNumber))")
+                }
                 Section("License") {
                     Text("CryptoSwift: This product includes software developed by the \"Marcin Krzyzanowski\" (http://krzyzanowskim.com/).").font(.caption)
                 }

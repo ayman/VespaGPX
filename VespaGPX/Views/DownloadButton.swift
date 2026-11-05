@@ -6,11 +6,14 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct DownloadButton: View {
     @EnvironmentObject var viewModel: ViewModel
     @Environment(\.modelContext) private var modelContext
     @State private var showFileImporter = false
+    @State private var showImportError = false
+    @State private var importErrorMessage = ""
     var minimal: Bool = false
 
     var body: some View {
@@ -26,6 +29,11 @@ struct DownloadButton: View {
                           allowedContentTypes: [.json],
                           allowsMultipleSelection: false,
                           onCompletion: getFileData)
+            .alert("Import failed", isPresented: $showImportError) {
+                Button("OK", role: .cancel) { }
+            } message: {
+                Text(importErrorMessage)
+            }
         } else {
             Button(action: { showFileImporter = true }) {
                 HStack {
@@ -39,41 +47,54 @@ struct DownloadButton: View {
                           allowedContentTypes: [.json],
                           allowsMultipleSelection: false,
                           onCompletion: getFileData)
+            .alert("Import failed", isPresented: $showImportError) {
+                Button("OK", role: .cancel) { }
+            } message: {
+                Text(importErrorMessage)
+            }
         }
     }
 
     private func getFileData(result: Result<[URL], any Error>) {
-        self.viewModel.downloading = true
-        viewModel.loadTimer = 0.0
-        Task {
-            switch result {
-            case .success(let files):
-                print("!!\(files[0])")
-                do {
-                    viewModel.loadTimer = 0.0
-                    guard let selectedFile: URL = try result.get().first else { return }
-                    let gotAccess = selectedFile.startAccessingSecurityScopedResource()
-                    if !gotAccess { return }
-                    viewModel.loadTimer = 1.0
-                    guard let fileString = String(data: try Data(contentsOf: selectedFile),
-                                                  encoding: .utf8) else { return }
-                    selectedFile.stopAccessingSecurityScopedResource()
-                    viewModel.loadTimer = 2.0
-                    await viewModel.decodeJSON(string: fileString)
-                    self.storeActivities()
-                    if let payload = viewModel.payload {
-                        self.storeUserProfile(profile: payload.userProfile)
-                        self.storeUserSettings(settings: payload.userSettings)
-                        self.storeVehicles(vehicles: payload.vehicles)
-                        self.storeVersionInfo(versionInfo: payload.versionInfo)
-                        self.viewModel.downloading = false
-                        viewModel.loadTimer = 0.0
-                    }
-                } catch {
-                    print("Loading Failure")
+        Task { @MainActor in
+            viewModel.downloading = true
+            viewModel.loadTimer = 0
+            defer {
+                viewModel.downloading = false
+                viewModel.loadTimer = 0
+            }
+            do {
+                let files = try result.get()
+                guard let selectedFile = files.first else {
+                    throw VespaBackupImporter.ImportError.invalidFormat
                 }
-            case .failure(let error):
-                print(error)
+                let gotAccess = selectedFile.startAccessingSecurityScopedResource()
+                guard gotAccess else {
+                    throw CocoaError(.fileReadNoPermission)
+                }
+                let fileString: String
+                do {
+                    fileString = try String(contentsOf: selectedFile, encoding: .utf8)
+                } catch {
+                    selectedFile.stopAccessingSecurityScopedResource()
+                    throw error
+                }
+                selectedFile.stopAccessingSecurityScopedResource()
+                viewModel.loadTimer = 2
+
+                try await viewModel.decodeJSON(string: fileString)
+                guard let payload = viewModel.payload else {
+                    throw VespaBackupImporter.ImportError.invalidFormat
+                }
+                self.storeActivities()
+                self.storeUserProfile(profile: payload.userProfile)
+                self.storeUserSettings(settings: payload.userSettings)
+                self.storeVehicles(vehicles: payload.vehicles)
+                self.storeVersionInfo(versionInfo: payload.versionInfo)
+                try modelContext.save()
+            } catch {
+                importErrorMessage = error.localizedDescription
+                showImportError = true
             }
         }
     }

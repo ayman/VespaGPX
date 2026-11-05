@@ -18,13 +18,20 @@ struct ActivityView: View {
 
     var body: some View {
         let distance = String(format: "%.1f", activity.distance)
-        let duration = String(format: "%.0f", activity.duration * 0.01)
+        let duration = String(format: "%.0f", activity.duration / 60.0)
         let gpx = getGPX()
         let gpxFile = GPXFile(fileName: "\(activity.id).gpx",
                               content: gpx)
         let csvFile = CSVFile(fileName: "\(activity.id).csv",
                               content: activity.tripData.replacingOccurrences(of: ";",
                                                                               with: ","))
+        let combinedCSVFile = CSVFile(
+            fileName: "\(activity.id)-combined.csv",
+            content: CSVMaker.combineGPSAndTelemetry(
+                tripData: activity.tripData,
+                gpsData: activity.gpsData
+            )
+        )
 
         Form {
             Section("Export") {
@@ -41,6 +48,14 @@ struct ActivityView: View {
                         Label("Export CSV",
                               systemImage: "square.and.arrow.up")
                     }
+                }
+                HStack {
+                    ShareLink(item: combinedCSVFile,
+                              preview: SharePreview(combinedCSVFile.fileName)) {
+                        Label("Export Combined CSV",
+                              systemImage: "square.and.arrow.up")
+                    }
+                    .disabled(activity.tripData.isEmpty)
                 }
             }
             Section("Activity Summary") {

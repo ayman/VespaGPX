@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import SwiftData
 
 struct ActivityRowView: View {
     @EnvironmentObject var viewModel: ViewModel
@@ -16,7 +17,7 @@ struct ActivityRowView: View {
 
     var body: some View {
         let distance = String(format: "%.1f", item.distance)
-        let duration = String(format: "%.0f", item.duration * 0.01)
+        let duration = String(format: "%.0f", item.duration / 60.0)
         let startTime = String(item.id.suffix(item.id.count - 5))
         HStack {
             VStack {

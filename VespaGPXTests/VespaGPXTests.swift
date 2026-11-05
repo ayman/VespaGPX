@@ -86,7 +86,7 @@ struct VespaGPXTests {
         let serialized = try JSONSerialization.data(withJSONObject: value)
         let cipher = try Blowfish(key: Array(syntheticUserId.utf8),
                                   blockMode: ECB(), padding: .pkcs5)
-        return Data(try cipher.encrypt(serialized.bytes)).base64EncodedString()
+        return Data(try cipher.encrypt(Array(serialized))).base64EncodedString()
     }
 
     private func stream(footer: Int? = nil, includeFooter: Bool = true) throws -> String {

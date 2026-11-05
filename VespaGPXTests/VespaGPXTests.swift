@@ -151,4 +151,80 @@ struct VespaGPXTests {
             try VespaBackupImporter.decode(incorrectFooter)
         }
     }
+
+    @Test func combinedExportMatchesByTimestamp() {
+        let telemetry = """
+        ts;speed;rpm;wheelSlip
+        1000000;20;2000;0.1
+        1001000;25;2200;0.2
+        1002000;30;2400;0.3
+        """
+        // Extra GPS fix must not shift telemetry records by one row.
+        let gps = """
+        ts;lat;lng;alt
+        999000;10;20;30
+        1000110;11;21;31
+        1001120;12;22;32
+        1002130;13;23;33
+        """
+        let rows = CSVMaker.combineGPSAndTelemetry(tripData: telemetry, gpsData: gps)
+            .split(separator: "\n")
+            .map { String($0).components(separatedBy: ",") }
+
+        #expect(rows.count == 4)
+        #expect(rows[0] == [
+            "timestamp_utc", "ts", "latitude", "longitude", "altitude",
+            "speed", "rpm", "wheelSlip"
+        ])
+        #expect(rows[1][1...4].elementsEqual(["1000000", "11", "21", "31"]))
+        #expect(rows[2][1...4].elementsEqual(["1001000", "12", "22", "32"]))
+        #expect(rows[3][1...4].elementsEqual(["1002000", "13", "23", "33"]))
+        #expect(rows[3][5...7].elementsEqual(["30", "2400", "0.3"]))
+        #expect(rows[1][0].hasSuffix("Z"))
+    }
+
+    @Test func combinedExportLeavesGpsGapsBlank() {
+        let telemetry = """
+        ts;speed
+        1000000;20
+        1001000;25
+        1002000;30
+        """
+        let gps = """
+        ts;lat;lng;alt
+        1000100;10;20;30
+        1005000;15;25;35
+        """
+        let rows = CSVMaker.combineGPSAndTelemetry(tripData: telemetry, gpsData: gps)
+            .split(separator: "\n")
+            .map { String($0).components(separatedBy: ",") }
+
+        #expect(rows.count == 4)
+        #expect(rows[1][2...4].elementsEqual(["10", "20", "30"]))
+        #expect(rows[2][2...4].elementsEqual(["", "", ""]))
+        #expect(rows[3][2...4].elementsEqual(["", "", ""]))
+        #expect(rows[2][5] == "25")
+        #expect(rows[3][5] == "30")
+    }
+
+    @Test func combinedExportDoesNotReuseGpsFix() {
+        let telemetry = """
+        ts;speed
+        1000000;20
+        1000250;25
+        """
+        let gps = """
+        ts;lat;lng;alt
+        1000100;10;20;30
+        """
+        let rows = CSVMaker.combineGPSAndTelemetry(tripData: telemetry, gpsData: gps)
+            .split(separator: "\n")
+            .map { String($0).components(separatedBy: ",") }
+
+        #expect(rows.count == 3)
+        #expect(rows[1][2...4].elementsEqual(["10", "20", "30"]))
+        #expect(rows[2][2...4].elementsEqual(["", "", ""]))
+        #expect(rows[2][5] == "25")
+    }
+
 }

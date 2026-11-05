@@ -241,6 +241,6 @@ enum VespaBackupImporter {
             throw ImportError.invalidFormat
         }
         let cipher = try Blowfish(key: Array(userId.utf8), blockMode: ECB(), padding: .pkcs5)
-        return Data(try cipher.decrypt(encrypted.bytes))
+        return Data(try cipher.decrypt(Array(encrypted)))
     }
 }

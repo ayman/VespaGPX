@@ -229,7 +229,7 @@
 			mainGroup = E3D0A6E02CE6C52B0099EA76;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				E30CC5A22CE7DC9F005E8B9B /* XCLocalSwiftPackageReference "../CryptoSwift" */,
+				B36D037D309C7920002D0644 /* XCRemoteSwiftPackageReference "CryptoSwift" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = E3D0A6EA2CE6C52B0099EA76 /* Products */;
@@ -637,12 +637,16 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCLocalSwiftPackageReference section */
-		E30CC5A22CE7DC9F005E8B9B /* XCLocalSwiftPackageReference "../CryptoSwift" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = ../CryptoSwift;
+/* Begin XCRemoteSwiftPackageReference section */
+		B36D037D309C7920002D0644 /* XCRemoteSwiftPackageReference "CryptoSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/krzyzanowskim/CryptoSwift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.10.0;
+			};
 		};
-/* End XCLocalSwiftPackageReference section */
+/* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
 		E30CC5A32CE7DC9F005E8B9B /* CryptoSwift */ = {

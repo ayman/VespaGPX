@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import SwiftData
 
 struct ActivityRowView: View {
     @EnvironmentObject var viewModel: ViewModel

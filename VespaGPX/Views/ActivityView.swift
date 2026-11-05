@@ -25,6 +25,13 @@ struct ActivityView: View {
         let csvFile = CSVFile(fileName: "\(activity.id).csv",
                               content: activity.tripData.replacingOccurrences(of: ";",
                                                                               with: ","))
+        let combinedCSVFile = CSVFile(
+            fileName: "\(activity.id)-combined.csv",
+            content: CSVMaker.combineGPSAndTelemetry(
+                tripData: activity.tripData,
+                gpsData: activity.gpsData
+            )
+        )
 
         Form {
             Section("Export") {
@@ -41,6 +48,14 @@ struct ActivityView: View {
                         Label("Export CSV",
                               systemImage: "square.and.arrow.up")
                     }
+                }
+                HStack {
+                    ShareLink(item: combinedCSVFile,
+                              preview: SharePreview(combinedCSVFile.fileName)) {
+                        Label("Export Combined CSV",
+                              systemImage: "square.and.arrow.up")
+                    }
+                    .disabled(activity.tripData.isEmpty)
                 }
             }
             Section("Activity Summary") {

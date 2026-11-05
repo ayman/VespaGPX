@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct DownloadButton: View {
     @EnvironmentObject var viewModel: ViewModel

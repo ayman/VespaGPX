@@ -54,11 +54,10 @@ extension CSVMaker {
             return ""
         }
 
-        let gpsSamples = GPXMaker.parseGpsCSV(gpsData: gpsData).compactMap { row
-            -> (timestamp: Double, latitude: String, longitude: String, altitude: String)? in
+        let gpsSamples = GPXMaker.parseGpsCSV(gpsData: gpsData).compactMap { row -> (timestamp: Double, latitude: String, longitude: String, altitude: String)? in
             guard let timestamp = Double(row.ts), timestamp.isFinite,
-                  let latitude = Double(row.lat), latitude.isFinite, (-90...90).contains(latitude),
-                  let longitude = Double(row.lng), longitude.isFinite, (-180...180).contains(longitude) else {
+                  let latitude = Double(row.lat), latitude.isFinite, (-90.0...90.0).contains(latitude),
+                  let longitude = Double(row.lng), longitude.isFinite, (-180.0...180.0).contains(longitude) else {
                 return nil
             }
             return (timestamp, row.lat, row.lng, row.alt)

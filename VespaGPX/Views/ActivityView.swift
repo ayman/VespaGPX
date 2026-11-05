@@ -18,7 +18,7 @@ struct ActivityView: View {
 
     var body: some View {
         let distance = String(format: "%.1f", activity.distance)
-        let duration = String(format: "%.0f", activity.duration * 0.01)
+        let duration = String(format: "%.0f", activity.duration / 60.0)
         let gpx = getGPX()
         let gpxFile = GPXFile(fileName: "\(activity.id).gpx",
                               content: gpx)
